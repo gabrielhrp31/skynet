@@ -1,13 +1,20 @@
 {% extends 'registration/base.html' %}
 {% load static %}
+{% load bootstrap %}
+{% block title %}
+    Login
+{% endblock %}
+{% block css %}
+    <!-- COmentario -->
+{% endblock %}
 {% block content %}
     <p class="login-box-msg">Entre para iniciar sua sessão</p>
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
+        {{ form| bootstrap }}
         <div class="row center">
             <div class="col-xs-4 col-xs-offset-4">
-              <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+              <button type="submit" class="btn btn-primary btn-block btn-flat">Entrar</button>
             </div>
         </div>
     </form>

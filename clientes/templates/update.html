@@ -1,14 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Novo Cliente</title>
-</head>
-<body>
-    <form  enctype="multipart/form-data" method="POST">
-        {% csrf_token %}
-        {{ form }}
-        <button type="submit">Salvar</button>
-    </form>
-</body>
-</html>
+{% extends  'dashboard/box.html' %}
+{% load bootstrap %}
+{% block title %}
+    Editar Cliente
+{% endblock %}
+{% block page_title %}
+    Clientes
+{% endblock %}
+{% block page_description %}
+    Editar Cliente
+{% endblock %}
+{% block box_classes %}
+    box-warning
+{% endblock %}
+{% block table %}
+    <div class="container">
+        <form class="margin-bottom" enctype="multipart/form-data" method="POST">
+            {% csrf_token %}
+            {{ form | bootstrap }}
+            <button type="submit" class="btn btn-success">Salvar</button>
+        </form>
+    </div>
+{% endblock %}

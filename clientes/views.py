@@ -1,20 +1,42 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
-from .models import Person
-from .forms import PersonForm
+from .models import Client
+from .forms import ClientForm
 # Create your views here.
+
+
+def getCurrent(path):
+    if path == '/clients/':
+        return 'Todos'
+    if path == '/clients/actives/':
+        return 'Ativos'
+    if path == '/clients/inactives/':
+        return 'Inativos'
+    return ''
+
+
+@login_required
+def list_clients_actives(request):
+    persons = Client.objects.filter(status=True)
+    return render(request, 'list.html', {'persons': persons, 'current': getCurrent(request.get_full_path())})
+
+
+@login_required
+def list_clients_inactives(request):
+    persons = Client.objects.filter(status=False)
+    return render(request, 'list.html', {'persons': persons, 'current': getCurrent(request.get_full_path())})
 
 
 @login_required
 def list_clients(request):
-    persons = Person.objects.all()
-    return render(request, 'list.html', {'persons': persons})
+    persons = Client.objects.all()
+    return render(request, 'list.html', {'persons': persons, 'current': getCurrent(request.get_full_path())})
 
 
 @login_required
 def new_client(request):
-    form = PersonForm(request.POST or None, request.FILES or None)
+    form = ClientForm(request.POST or None, request.FILES or None)
 
     if form.is_valid():
         form.save()
@@ -25,8 +47,8 @@ def new_client(request):
 
 @login_required
 def update_client(request, id):
-    person = get_object_or_404(Person, pk=id)
-    form = PersonForm(request.POST or None, request.FILES or None, instance=person)
+    person = get_object_or_404(Client, pk=id)
+    form = ClientForm(request.POST or None, request.FILES or None, instance=person)
     if form.is_valid():
         form.save()
         return redirect('list_clients')
@@ -35,8 +57,8 @@ def update_client(request, id):
 
 @login_required
 def delete_client(request, id):
-    person = get_object_or_404(Person, pk=id)
-    form = PersonForm(request.POST or None, request.FILES or None, instance=person)
+    person = get_object_or_404(Client, pk=id)
+    form = ClientForm(request.POST or None, request.FILES or None, instance=person)
     if request.method == 'POST':
         person.delete()
         return redirect('list_clients')

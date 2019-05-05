@@ -1,20 +1,67 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<ul>
-    {% for person in persons %}
-        <li>
-            <a href="{% url 'update_client' person.id %}">{{person.first_name }}  {{person.last_name}}</a>
-            <a href="{% url 'delete_client' person.id %}" style="color: darkred">X</a>
-        </li>
-    {% endfor %}
-
-    <a href="{% url 'new_client' %}"> Novo Cliente</a>
-    <a href="{% url 'logout' %}">Sair</a>
-</ul>
-</body>
-</html>
+{% extends  'dashboard/box.html' %}
+{% block title %}
+    Clientes {{ current }}
+{% endblock %}
+{% block page_title %}
+    Clientes
+{% endblock %}
+{% block page_description %}
+    {{ current }}
+{% endblock %}
+{% block box_classes %}
+    {% ifequal current.lower 'ativos' %}
+        box-success
+    {% endifequal %}
+    {% ifequal current.lower 'inativos' %}
+        box-danger
+    {% endifequal %}
+    {% ifequal current.lower 'todos' %}
+        box-primary
+    {% endifequal %}
+{% endblock %}
+{% block box_header %}
+    <div class="col-xs-4 col-lg-3 col-xs-offset-6  col-sm-offset-8 col-md-offset-9 col-lg-offset-11">
+        <a href="{% url 'new_client' %}" class="btn btn-success"><i class="fa fa-plus"> Novo Cliente</i></a>
+    </div>
+{% endblock %}
+{% block table %}
+    <table class="table table-hover">
+        <tbody>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Idade</th>
+                <th>Status</th>
+                <th colspan="3">Ações</th>
+            </tr>
+            {% for person in persons %}
+                <tr>
+                    <td>{{ person.id }}</td>
+                    <td>{{person.first_name }}  {{person.last_name}}</td>
+                    <td>{{ person.age }}</td>
+                    <td>
+                        {% if person.status %}
+                            <span class="label label-success">Ativo</span>
+                        {% else %}
+                            <span class="label label-danger">Inativo</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a class="btn btn-info" href="#"><i class="fa fa-eye"></i></a>
+                    </td>
+                    <td>
+                        <a class="btn btn-warning" href="{% url 'update_client' person.id %}"><i class="fa fa-edit"></i></a>
+                    </td>
+                    <td>
+                        <a  class="btn btn-danger" href="{% url 'delete_client' person.id %}"><i class="fa fa-trash"></i></a>
+                    </td>
+                </tr>
+            {% endfor %}
+            {% if not persons    %}
+                <td colspan="7">
+                    Nenhum Cliente Ativo
+                </td>
+            {% endif %}
+        </tbody>
+    </table>
+{% endblock %}
