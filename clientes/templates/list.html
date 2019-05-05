@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<ul>
+    {% for person in persons %}
+        <li>
+            <a href="{% url 'update_client' person.id %}">{{person.first_name }}  {{person.last_name}}</a>
+            <a href="{% url 'delete_client' person.id %}" style="color: darkred">X</a>
+        </li>
+    {% endfor %}
+
+    <a href="{% url 'new_client' %}"> Novo Cliente</a>
+    <a href="{% url 'logout' %}">Sair</a>
+</ul>
+</body>
+</html>
