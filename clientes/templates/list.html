@@ -53,9 +53,32 @@
                         <a class="btn btn-warning" href="{% url 'update_client' person.id %}"><i class="fa fa-edit"></i></a>
                     </td>
                     <td>
-                        <a  class="btn btn-danger" href="{% url 'delete_client' person.id %}"><i class="fa fa-trash"></i></a>
+                        <a  class="btn btn-danger" data-toggle="modal" data-target="#modal-delete{{ person.id }}"><i class="fa fa-trash"></i></a>
                     </td>
                 </tr>
+                <div class="modal modal-danger fade in" id="modal-delete{{ person.id }}">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">×</span></button>
+                            <h4 class="modal-title">Deletar Cliente</h4>
+                          </div>
+                          <div class="modal-body">
+                            <p>Tem Certeza que deseja deletar {{ person.first_name }} {{ person.last_name }}?</p>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
+                              <form action="{% url 'delete_client' person.id %}" method="post">
+                                  {% csrf_token %}
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                              </form>
+                          </div>
+                        </div>
+                    <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>
             {% endfor %}
             {% if not persons    %}
                 <td colspan="7">
