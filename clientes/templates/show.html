@@ -1,0 +1,64 @@
+{% extends  'dashboard/box.html' %}
+{% load static %}
+{% block title %}
+    Clientes {{ current }}
+{% endblock %}
+{% block page_title %}
+    Visualisar Cliente
+{% endblock %}
+{% block page_description %}
+    {{ current }}
+{% endblock %}
+{% block box_classes %}
+    box-primary
+{% endblock %}
+{% block box_header %}
+    <div class="col-xs-4 col-lg-3 col-xs-offset-6  col-sm-offset-8 col-md-offset-9 col-lg-offset-11">
+        <a href="{% url 'list_clients' %}" class="btn btn-primary"><i class="fa fa-arrow-left">Voltar</i></a>
+    </div>
+{% endblock %}
+{% block table %}
+    <div class="container margin-bottom ">
+    <div class="row">
+        <div class="col-12">
+            <img class="profile-user-img img-responsive img-circle" src="{% static "dist/img/user4-128x128.jpg" %}" alt="User profile picture">
+            <h3 class="profile-username text-center">{{ person.first_name }} {{ person.last_name }}</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+                  <p class="text-muted text-center">Software Engineer</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-lg-6">
+            <ul class="list-group list-group-unbordered">
+                <li class="list-group-item">
+                  <b>Idade</b> <a class="pull-right">{{ person.age }}</a>
+                </li>
+                <li class="list-group-item">
+                    <b>Status</b><a class="pull-right"> {{ person.get_active_label | safe}} </a>
+                </li>
+                <li class="list-group-item">
+                  <b>Salário</b> <a class="pull-right">{{ person.salary | floatformat }}</a>
+                </li>
+            </ul>
+        </div>
+         <div class="col-xs-12 col-lg-6">
+            <ul class="list-group list-group-unbordered">
+                <li class="list-group-item">
+                  <b>Idade</b> <a class="pull-right">{{ person.age }}</a>
+                </li>
+                <li class="list-group-item">
+                    <b>Status</b><a class="pull-right"> {{ person.get_active_label | safe}} </a>
+                </li>
+                <li class="list-group-item">
+                  <b>Salário</b> <a class="pull-right">{{ person.salary | floatformat }}</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
+    </div>
+{% endblock %}

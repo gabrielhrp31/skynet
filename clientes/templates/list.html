@@ -40,14 +40,10 @@
                     <td>{{person.first_name }}  {{person.last_name}}</td>
                     <td>{{ person.age }}</td>
                     <td>
-                        {% if person.status %}
-                            <span class="label label-success">Ativo</span>
-                        {% else %}
-                            <span class="label label-danger">Inativo</span>
-                        {% endif %}
+                        {{ person.get_active_label | safe }}
                     </td>
                     <td>
-                        <a class="btn btn-info" href="#"><i class="fa fa-eye"></i></a>
+                        <a class="btn btn-info" href="{% url 'show_client' person.id %}"><i class="fa fa-eye"></i></a>
                     </td>
                     <td>
                         <a class="btn btn-warning" href="{% url 'update_client' person.id %}"><i class="fa fa-edit"></i></a>

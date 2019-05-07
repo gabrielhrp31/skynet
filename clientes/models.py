@@ -11,3 +11,8 @@ class Client(models.Model):
 
     def __str__(self):
         return self.first_name + ' ' + self.last_name
+
+    def get_active_label(self):
+        if self.status:
+            return '<span class="label label-success">Ativo</span>'
+        return '<span class="label label-danger">Inativo</span>'

@@ -59,10 +59,14 @@ def update_client(request, id):
 def delete_client(request, id):
     person = get_object_or_404(Client, pk=id)
     form = ClientForm(request.POST or None, request.FILES or None, instance=person)
-    if request.method == 'POST':
-        person.delete()
-        return redirect('list_clients')
-    return render(request, 'delete.html', {'person_name': person.first_name+' '+person.last_name})
+    person.delete()
+    return redirect('list_clients')
+
+
+@login_required
+def show_client(request, id):
+    person = get_object_or_404(Client, pk=id)
+    return render(request, 'show.html', {'person': person})
 
 
 def logout_user(request):
