@@ -3,3 +3,4 @@
 media
 .env7
 *.sqlite3
+static
