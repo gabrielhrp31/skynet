@@ -16,7 +16,11 @@
     <div class="container">
         <form  class="margin-bottom" enctype="multipart/form-data" action="{% url 'new_client' %}" method="POST">
             {% csrf_token %}
+            <h3 class="text-blue">Dados do Cliente</h3>
             {{ form | bootstrap }}
+            <hr>
+            <h4 class="text-info">Endereço</h4>
+            {{ form_adress | bootstrap }}
             <button class="btn btn-success" type="submit">Salvar</button>
         </form>
     </div>

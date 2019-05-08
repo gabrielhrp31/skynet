@@ -1,6 +1,34 @@
 {% extends  'dashboard/box.html' %}
+{% load static %}
 {% block title %}
     Clientes {{ current }}
+{% endblock %}
+
+{% block alert %}
+    {% if messages %}
+        {% for message in messages %}
+            {% if 'status' in message.tags %}
+                <div class="alert alert-info alert-dismissible margin">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <span> {{ message }}</span>
+                </div>
+            {% endif %}
+            {% if 'deleted' in message.tags %}
+                <div class="alert alert-success alert-dismissible margin">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4><i class="icon fa fa-check"></i> Usuário Excluido!</h4>
+                    <span>{{ message }}</span>
+                </div>
+            {% endif %}
+            {% if 'registred' in message.tags %}
+                <div class="alert alert-success alert-dismissible margin">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4><i class="icon fa fa-check"></i> Usuário Cadastrado!</h4>
+                    <span>{{ message }}</span>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
 {% endblock %}
 {% block page_title %}
     Clientes
@@ -25,62 +53,101 @@
     </div>
 {% endblock %}
 {% block table %}
-    <table class="table table-hover">
-        <tbody>
-            <tr>
-                <th>ID</th>
-                <th>Nome</th>
-                <th>Idade</th>
-                <th>Status</th>
-                <th colspan="3">Ações</th>
-            </tr>
-            {% for person in persons %}
+    <style>
+        td{
+            vertical-align: bottom;
+        }
+    </style>
+    <div class="container-fluid">
+        <table id="table-clients" class="table table-hover"  style="width:100%">
+            <thead>
                 <tr>
-                    <td>{{ person.id }}</td>
-                    <td>{{person.first_name }}  {{person.last_name}}</td>
-                    <td>{{ person.age }}</td>
-                    <td>
-                        {{ person.get_active_label | safe }}
-                    </td>
-                    <td>
-                        <a class="btn btn-info" href="{% url 'show_client' person.id %}"><i class="fa fa-eye"></i></a>
-                    </td>
-                    <td>
-                        <a class="btn btn-warning" href="{% url 'update_client' person.id %}"><i class="fa fa-edit"></i></a>
-                    </td>
-                    <td>
-                        <a  class="btn btn-danger" data-toggle="modal" data-target="#modal-delete{{ person.id }}"><i class="fa fa-trash"></i></a>
-                    </td>
+                    <th class="align-middle">ID</th>
+                    <th>Nome</th>
+                    <th>Idade</th>
+                    <th>Salário</th>
+                    <th>Status</th>
+                    <th >Ver</th>
+                    <th>Editar</th>
+                    <th>Deletar</th>
                 </tr>
-                <div class="modal modal-danger fade in" id="modal-delete{{ person.id }}">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                              <span aria-hidden="true">×</span></button>
-                            <h4 class="modal-title">Deletar Cliente</h4>
-                          </div>
-                          <div class="modal-body">
-                            <p>Tem Certeza que deseja deletar {{ person.first_name }} {{ person.last_name }}?</p>
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
-                              <form action="{% url 'delete_client' person.id %}" method="post">
-                                  {% csrf_token %}
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                              </form>
-                          </div>
+            </thead>
+            <tbody>
+                {% for person in persons %}
+                    <tr>
+                        <td>{{ person.id }}</td>
+                        <td>{{ person.full_name }}</td>
+                        <td>{{ person.age }}</td>
+                        <td>{{ person.salary }}</td>
+                        <td>
+                            <form action="{% url 'change_client_status' person.id %}">
+                                <button class="btn-link" type="submit"   style="text-decoration:none;padding: 0;">
+                                    {{ person.get_active_label | safe }}
+                                </button>
+                            </form>
+                        </td>
+                        <td>
+                            <a class="btn btn-info" href="{% url 'show_client' person.id %}"><i class="fa fa-eye"></i></a>
+                        </td>
+                        <td>
+                            <a class="btn btn-warning" href="{% url 'update_client' person.id %}"><i class="fa fa-edit"></i></a>
+                        </td>
+                        <td>
+                            <a  class="btn btn-danger" data-toggle="modal" data-target="#modal-delete{{ person.id }}"><i class="fa fa-trash"></i></a>
+                        </td>
+                    </tr>
+                    <div class="modal modal-danger fade in" id="modal-delete{{ person.id }}">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">×</span></button>
+                                <h4 class="modal-title">Deletar Cliente</h4>
+                              </div>
+                              <div class="modal-body">
+                                <p>Tem Certeza que deseja deletar {{ person.full_name }}?</p>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
+                                  <form action="{% url 'delete_client' person.id %}" method="post">
+                                      {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                  </form>
+                              </div>
+                            </div>
+                        <!-- /.modal-content -->
                         </div>
-                    <!-- /.modal-content -->
+                        <!-- /.modal-dialog -->
                     </div>
-                    <!-- /.modal-dialog -->
-                </div>
-            {% endfor %}
-            {% if not persons    %}
-                <td colspan="7">
-                    Nenhum Cliente Ativo
-                </td>
-            {% endif %}
-        </tbody>
-    </table>
+                {% endfor %}
+                {% if not persons    %}
+                    <td colspan="7">
+                        Nenhum dos Clientes estão {{ current }}
+                    </td>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+{% block scripts %}
+    {% if persons|length > 0 %}
+        <script>
+        $(document).ready( function () {
+            $('#table-clients').DataTable({
+                "language": {
+                    "lengthMenu": "Mostrar _MENU_ por Página",
+                    "zeroRecords": "Nenhum Registro de Clientes",
+                    "info": "Pagina _PAGE_ de _PAGES_",
+                    "infoEmpty": "Nenhum registro disponivel",
+                    "search":"Pesquisar",
+                    "paginate": {
+                        "previous": "Anterior",
+                        "next": "Próximo",
+                    },
+                    "infoFiltered": "(Filtrado de _MAX_ Registros)"
+                }
+            });
+        } );
+        </script>
+    {% endif %}
 {% endblock %}

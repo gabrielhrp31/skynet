@@ -20,6 +20,7 @@
                     {% block page_description %} {% endblock %}
                 </small>
             </h1>
+            {% block alert %}{% endblock %}
         </section>
         <!-- Main content -->
         <section class="content container-fluid">
@@ -28,8 +29,15 @@
         <!-- /.content -->
         </div>
     </div>
-    {% block scripts %}
-        <!-- AdminLTE App -->
-        <script src="{% static 'dist/js/adminlte.min.js' %}"></script>
-    {%  endblock %}
+
+    <!-- jQuery 3 -->
+    <script src="{% static 'bower_components/jquery/dist/jquery.min.js' %}"></script>
+    <!-- Data Tables -->
+    <script src="{% static 'bower_components/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static "bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js" %}"></script>
+    <!-- AdminLTE App -->
+    <script src="{% static 'dist/js/adminlte.min.js' %}"></script>
+    <!-- Bootstrap 3.3.7 -->
+    <script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+    {% block scripts %} {%  endblock %}
 {% endblock %}
