@@ -23,6 +23,8 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('edit_profile/', views.update_profile, name='edit_profile'),
+    path('profile/', views.profile, name='profile'),
     path('clients/', include(clients_urls)),
     path('login/', auth_views.LoginView.as_view(), name='login'),
     path('password_reset/', auth_views.PasswordResetView.as_view(template_name='registration/password_reset_form.html'), name='password_reset'),
