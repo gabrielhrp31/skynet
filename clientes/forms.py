@@ -25,7 +25,7 @@ class AddressForm(ModelForm):
         labels ={
             'street': 'Rua',
             'number': 'Número',
-            'district': 'Distrito',
+            'district': 'Bairro',
             'city': 'Cidade',
             'country': 'Estado',
         }

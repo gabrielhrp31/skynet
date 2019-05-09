@@ -1,5 +1,7 @@
+
 from django.db import models
 from clientes.Models.Address import Address
+from django.utils.timezone import now
 
 
 class Client(models.Model):
@@ -9,6 +11,7 @@ class Client(models.Model):
     age = models.IntegerField()
     salary = models.DecimalField(max_digits=10, decimal_places=2)
     status = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
     address = models.OneToOneField(Address, models.CASCADE, default=None, null=True)
 
     def __str__(self):

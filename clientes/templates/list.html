@@ -20,6 +20,13 @@
                     <span>{{ message }}</span>
                 </div>
             {% endif %}
+            {% if 'updated' in message.tags %}
+                <div class="alert alert-success alert-dismissible margin">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4><i class="icon fa fa-check"></i> Usuário Atualizado!</h4>
+                    <span>{{ message }}</span>
+                </div>
+            {% endif %}
             {% if 'registred' in message.tags %}
                 <div class="alert alert-success alert-dismissible margin">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -48,7 +55,7 @@
     {% endifequal %}
 {% endblock %}
 {% block box_header %}
-    <div class="col-xs-4 col-lg-3 col-xs-offset-6  col-sm-offset-8 col-md-offset-9 col-lg-offset-11">
+    <div class="col-xs-offset-7  col-sm-offset-9 col-md-offset-9 col-lg-offset-11">
         <a href="{% url 'new_client' %}" class="btn btn-success"><i class="fa fa-plus"> Novo Cliente</i></a>
     </div>
 {% endblock %}
@@ -120,10 +127,16 @@
                         <!-- /.modal-dialog -->
                     </div>
                 {% endfor %}
-                {% if not persons    %}
-                    <td colspan="7">
-                        Nenhum dos Clientes estão {{ current }}
-                    </td>
+                {% if not persons   %}
+                    {% ifnotequal current 'Todos' %}
+                        <td colspan="7">
+                            Nenhum dos Clientes estão {{ current }}
+                        </td>
+                    {% else %}
+                        <td colspan="7">
+                            Nenhum CLiente Cadastrado
+                        </td>
+                    {% endifnotequal %}
                 {% endif %}
             </tbody>
         </table>

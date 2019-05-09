@@ -2,6 +2,72 @@
 {% block title %}
     Dashboard
 {% endblock %}
+{% block page_title %}
+    Dashboard
+{% endblock %}
+{% block page_description %}
+    Skynet
+{% endblock %}
 {% block content %}
+    <div class="row">
+    <div class="col-xs-8">
+        <h3>Clientes</h3>
+    </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-lg-4">
+            <div class="info-box bg-blue">
+            <span class="info-box-icon"><i class="fa fa-group"></i></span>
 
+            <div class="info-box-content">
+              <span class="info-box-text">Quantidade de Clientes</span>
+              <span class="info-box-number">{{ all }}</span>
+
+              <div class="progress">
+                <div class="progress-bar" style="width: {{ all_recents | floatformat}}%"></div>
+              </div>
+              <span class="progress-description">
+                  {{ all_recents }}% Cadastrados Este Mês
+              </span>
+            </div>
+            <!-- /.info-box-content -->
+        </div>
+        </div>
+        <div class="col-xs-12 col-lg-4">
+            <div class="info-box bg-green">
+            <span class="info-box-icon"><i class="fa fa-group"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Clientes Ativos</span>
+              <span class="info-box-number">{{ actives.amount }}</span>
+
+              <div class="progress">
+                <div class="progress-bar" style="width: {{ actives.percentual | floatformat }}%"></div>
+              </div>
+              <span class="progress-description">
+                     {{ actives.percentual }}% do Total Estão Ativos
+              </span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+        </div>
+        <div class="col-xs-12 col-lg-4">
+            <div class="info-box bg-red">
+            <span class="info-box-icon"><i class="fa fa-group"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Clientes Inativos</span>
+              <span class="info-box-number">{{ inactives.amount }}</span>
+
+              <div class="progress">
+                <div class="progress-bar" style="width: {{ inactives.percentual|floatformat }}%"></div>
+              </div>
+              <span class="progress-description">
+                     {{ inactives.percentual }}% do Total Estão Inativos
+                  </span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+        </div>
+    </div>
 {% endblock %}

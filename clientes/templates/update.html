@@ -17,6 +17,7 @@
         <form class="margin-bottom" enctype="multipart/form-data" method="POST">
             {% csrf_token %}
             {{ form | bootstrap }}
+            {{ form_address | bootstrap }}
             <button type="submit" class="btn btn-success">Salvar</button>
         </form>
     </div>

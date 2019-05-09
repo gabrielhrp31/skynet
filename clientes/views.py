@@ -4,6 +4,7 @@ from django.contrib.auth import logout
 from django.contrib import messages
 
 from .models import Client
+from .models import Address
 from .forms import ClientForm
 from .forms import AddressForm
 
@@ -59,11 +60,15 @@ def new_client(request):
 @login_required
 def update_client(request, id):
     person = get_object_or_404(Client, pk=id)
+    address = get_object_or_404(Address, client=person)
     form = ClientForm(request.POST or None, request.FILES or None, instance=person)
-    if form.is_valid():
+    form_address = AddressForm(request.POST or None, request.FILES or None, instance=address)
+    if form.is_valid() and form_address.is_valid():
         form.save()
+        form_address.save()
+        messages.add_message(request, messages.SUCCESS, 'O usuário '+person.full_name()+' foi atualizado com sucesso!', extra_tags='updated')
         return redirect('list_clients')
-    return render(request, 'update.html', {'form': form})
+    return render(request, 'update.html', {'form': form, 'form_address': form_address})
 
 
 @login_required
