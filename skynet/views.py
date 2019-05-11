@@ -14,15 +14,15 @@ def index(request):
     all = all.count()
 
     # Calcula a porcentagem de clientes cadastrados
-    all_recents=Client.objects.filter(created_at__lte=datetime.now()-timedelta(30))
+    all_recents=Client.objects.filter(created_at__gte=datetime.now()-timedelta(30))
     all_recents = all_recents.count()
-    if all_recents>0:
-        all_recents=((all-all_recents)/all)*100
+    if all_recents > 0:
+        all_recents=(all_recents/all)*100
 
     # Pega a quantidade de clientes ativos e calcula a porcentagem em relação ao total
     list_actives = Client.objects.filter(status=True)
     list_actives = list_actives.count()
-    if list_actives>0:
+    if list_actives > 0:
         actives = {'amount': list_actives, 'percentual': ((list_actives/all)*100)}
     else:
         actives = {'amount': 0, 'percentual': 0}
