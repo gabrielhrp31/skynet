@@ -1,12 +1,10 @@
-
 from django.db import models
 from clientes.Models.Address import Address
-from django.utils.timezone import now
 
 
 class Client(models.Model):
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
+    first_name = models.CharField(max_length=30, verbose_name='Nome')
+    last_name = models.CharField(max_length=30, verbose_name='Sobrenome')
     occupation = models.CharField(max_length=30, default='')
     age = models.IntegerField()
     salary = models.DecimalField(max_digits=10, decimal_places=2)

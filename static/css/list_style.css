@@ -1,0 +1,11 @@
+.dt-buttons{
+    width: 10%;
+    display: inline;
+    position: relative;
+}
+
+.dataTables_filter{
+    width: 20%;
+    float: right;
+    display: inline-table;
+}

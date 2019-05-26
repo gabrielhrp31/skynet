@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="{% static 'css/list_style.css'%}">
 {% endblock %}
 {% block title %}
-    Clientes ({{ current }})
+    Contratos ({{ current }})
 {% endblock %}
 
 {% block alert %}
@@ -19,21 +19,21 @@
             {% if 'deleted' in message.tags %}
                 <div class="alert alert-success alert-dismissible margin">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4><i class="icon fa fa-check"></i> Usuário Excluido!</h4>
+                    <h4><i class="icon fa fa-check"></i> Contrato Excluido!</h4>
                     <span>{{ message }}</span>
                 </div>
             {% endif %}
             {% if 'updated' in message.tags %}
                 <div class="alert alert-success alert-dismissible margin">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4><i class="icon fa fa-check"></i> Usuário Atualizado!</h4>
+                    <h4><i class="icon fa fa-check"></i> Contrato Atualizado!</h4>
                     <span>{{ message }}</span>
                 </div>
             {% endif %}
             {% if 'registred' in message.tags %}
                 <div class="alert alert-success alert-dismissible margin">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4><i class="icon fa fa-check"></i> Usuário Cadastrado!</h4>
+                    <h4><i class="icon fa fa-check"></i> Contrato Cadastrado!</h4>
                     <span>{{ message }}</span>
                 </div>
             {% endif %}
@@ -41,16 +41,16 @@
     {% endif %}
 {% endblock %}
 {% block page_title %}
-    Clientes
+    Contratos
 {% endblock %}
 {% block page_description %}
     {{ current }}
 {% endblock %}
 {% block box_classes %}
-    {% ifequal current.lower 'ativos' %}
+    {% ifequal current.lower 'in_progress' %}
         box-success
     {% endifequal %}
-    {% ifequal current.lower 'inativos' %}
+    {% ifequal current.lower 'finished' %}
         box-danger
     {% endifequal %}
     {% ifequal current.lower 'todos' %}
@@ -59,7 +59,7 @@
 {% endblock %}
 {% block box_header %}
     <div class="col-xs-offset-7  col-sm-offset-9 col-md-offset-9 col-lg-offset-11">
-        <a href="{% url 'new_client' %}" class="btn btn-success"><i class="fa fa-plus"> Novo Cliente</i></a>
+        <a href="{% url 'new_contract' %}" class="btn btn-success"><i class="fa fa-plus">Novo Contrato</i></a>
     </div>
 {% endblock %}
 {% block table %}
@@ -69,7 +69,7 @@
         }
     </style>
     <div class="container-fluid">
-        <table id="table-clients" class="table table-hover"  style="width:100%">
+        <table id="table-services" class="table table-hover"  style="width:100%">
             <thead>
                 <tr>
                     <th class="align-middle">ID</th>
@@ -90,17 +90,17 @@
                         <td>{{ person.age }}</td>
                         <td>{{ person.salary }}</td>
                         <td>
-                            <form action="{% url 'change_client_status' person.id %}">
+                            <form action="{#% url 'change_service_status' person.id %#}">
                                 <button class="btn-link" type="submit"   style="text-decoration:none;padding: 0;">
                                     {{ person.get_active_label | safe }}
                                 </button>
                             </form>
                         </td>
                         <td>
-                            <a class="btn btn-info" href="{% url 'show_client' person.id %}"><i class="fa fa-eye"></i></a>
+                            <a class="btn btn-info" href="{#% url 'show_service' person.id %#}"><i class="fa fa-eye"></i></a>
                         </td>
                         <td>
-                            <a class="btn btn-warning" href="{% url 'update_client' person.id %}"><i class="fa fa-edit"></i></a>
+                            <a class="btn btn-warning" href="{#% url 'update_service' person.id %#}"><i class="fa fa-edit"></i></a>
                         </td>
                         <td>
                             <a  class="btn btn-danger" data-toggle="modal" data-target="#modal-delete{{ person.id }}"><i class="fa fa-trash"></i></a>
@@ -119,7 +119,7 @@
                               </div>
                               <div class="modal-footer">
                                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
-                                  <form action="{% url 'delete_client' person.id %}" method="post">
+                                  <form action="{#% url 'delete_client' person.id %#}" method="post">
                                       {% csrf_token %}
                                     <button type="submit" class="btn btn-danger">Delete</button>
                                   </form>
@@ -133,11 +133,11 @@
                 {% if not persons   %}
                     {% ifnotequal current 'Todos' %}
                         <td colspan="7">
-                            Nenhum dos Clientes estão {{ current }}
+                            Nenhum dos Serviços estão {{ current }}
                         </td>
                     {% else %}
                         <td colspan="7">
-                            Nenhum Cliente Cadastrado
+                            Nenhum Serviço Cadastrado
                         </td>
                     {% endifnotequal %}
                 {% endif %}
@@ -152,7 +152,7 @@
         <script src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.print.min.js"></script>
         <script>
         $(document).ready( function () {
-            $('#table-clients').DataTable({
+            $('#table-services').DataTable({
                 dom: 'Bfrtip',
                 buttons: [
                     {
@@ -166,7 +166,7 @@
                 ],
                 "language": {
                     "lengthMenu": "Mostrar _MENU_ por Página",
-                    "zeroRecords": "Nenhum Registro de Clientes",
+                    "zeroRecords": "Nenhum Registro de Serviços",
                     "info": "Pagina _PAGE_ de _PAGES_",
                     "infoEmpty": "Nenhum registro disponivel",
                     "search":"Pesquisar",

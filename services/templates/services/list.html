@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="{% static 'css/list_style.css'%}">
 {% endblock %}
 {% block title %}
-    Clientes ({{ current }})
+    Serviços ({{ current }})
 {% endblock %}
 
 {% block alert %}
@@ -19,21 +19,21 @@
             {% if 'deleted' in message.tags %}
                 <div class="alert alert-success alert-dismissible margin">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4><i class="icon fa fa-check"></i> Usuário Excluido!</h4>
+                    <h4><i class="icon fa fa-check"></i> Serviço Excluido!</h4>
                     <span>{{ message }}</span>
                 </div>
             {% endif %}
             {% if 'updated' in message.tags %}
                 <div class="alert alert-success alert-dismissible margin">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4><i class="icon fa fa-check"></i> Usuário Atualizado!</h4>
+                    <h4><i class="icon fa fa-check"></i> Serviço Atualizado!</h4>
                     <span>{{ message }}</span>
                 </div>
             {% endif %}
             {% if 'registred' in message.tags %}
                 <div class="alert alert-success alert-dismissible margin">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4><i class="icon fa fa-check"></i> Usuário Cadastrado!</h4>
+                    <h4><i class="icon fa fa-check"></i> Serviço Cadastrado!</h4>
                     <span>{{ message }}</span>
                 </div>
             {% endif %}
@@ -41,7 +41,7 @@
     {% endif %}
 {% endblock %}
 {% block page_title %}
-    Clientes
+    Serviços
 {% endblock %}
 {% block page_description %}
     {{ current }}
@@ -59,7 +59,7 @@
 {% endblock %}
 {% block box_header %}
     <div class="col-xs-offset-7  col-sm-offset-9 col-md-offset-9 col-lg-offset-11">
-        <a href="{% url 'new_client' %}" class="btn btn-success"><i class="fa fa-plus"> Novo Cliente</i></a>
+        <a href="{% url 'new_service' %}" class="btn btn-success"><i class="fa fa-plus">Novo Serviço</i></a>
     </div>
 {% endblock %}
 {% block table %}
@@ -69,57 +69,53 @@
         }
     </style>
     <div class="container-fluid">
-        <table id="table-clients" class="table table-hover"  style="width:100%">
+        <table id="table-services" class="table table-hover"  style="width:100%">
             <thead>
                 <tr>
                     <th class="align-middle">ID</th>
                     <th>Nome</th>
-                    <th>Idade</th>
-                    <th>Salário</th>
-                    <th>Status</th>
-                    <th >Ver</th>
-                    <th>Editar</th>
-                    <th>Deletar</th>
+                    <th>Preço do Serviço</th>
+                    <th>Funcionários Disponiveis</th>
                 </tr>
             </thead>
             <tbody>
-                {% for person in persons %}
+                {% for service in services %}
                     <tr>
-                        <td>{{ person.id }}</td>
-                        <td>{{ person.full_name }}</td>
-                        <td>{{ person.age }}</td>
-                        <td>{{ person.salary }}</td>
+                        <td>{{ service.id }}</td>
+                        <td>{{ service.name }}</td>
+                        <td>{{ service.price }}</td>
+                        <td>{{ service.employees_available }}</td>
                         <td>
-                            <form action="{% url 'change_client_status' person.id %}">
+                            <form action="{% url 'change_service_status' service.id %}">
                                 <button class="btn-link" type="submit"   style="text-decoration:none;padding: 0;">
-                                    {{ person.get_active_label | safe }}
+                                    {{ service.get_active_label | safe }}
                                 </button>
                             </form>
                         </td>
                         <td>
-                            <a class="btn btn-info" href="{% url 'show_client' person.id %}"><i class="fa fa-eye"></i></a>
+                            <a class="btn btn-info" href="{% url 'show_service' service.id %}"><i class="fa fa-eye"></i></a>
                         </td>
                         <td>
-                            <a class="btn btn-warning" href="{% url 'update_client' person.id %}"><i class="fa fa-edit"></i></a>
+                            <a class="btn btn-warning" href="{% url 'update_service' service.id %}"><i class="fa fa-edit"></i></a>
                         </td>
                         <td>
-                            <a  class="btn btn-danger" data-toggle="modal" data-target="#modal-delete{{ person.id }}"><i class="fa fa-trash"></i></a>
+                            <a  class="btn btn-danger" data-toggle="modal" data-target="#modal-delete{{ service.id }}"><i class="fa fa-trash"></i></a>
                         </td>
                     </tr>
-                    <div class="modal modal-danger fade in" id="modal-delete{{ person.id }}">
+                    <div class="modal modal-danger fade in" id="modal-delete{{ service.id }}">
                         <div class="modal-dialog">
                             <div class="modal-content">
                               <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                   <span aria-hidden="true">×</span></button>
-                                <h4 class="modal-title">Deletar Cliente</h4>
+                                <h4 class="modal-title">Deletar Serviço</h4>
                               </div>
                               <div class="modal-body">
-                                <p>Tem Certeza que deseja deletar {{ person.full_name }}?</p>
+                                  <p>Tem Certeza que deseja deletar <strong>{{ service.name }}</strong> deletar este serviço <strong> apagará {{ service.contracts.count }} contrato(s)</strong> ligados a ele?</p>
                               </div>
                               <div class="modal-footer">
                                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
-                                  <form action="{% url 'delete_client' person.id %}" method="post">
+                                  <form action="{% url 'delete_service' service.id %}" method="post">
                                       {% csrf_token %}
                                     <button type="submit" class="btn btn-danger">Delete</button>
                                   </form>
@@ -130,14 +126,14 @@
                         <!-- /.modal-dialog -->
                     </div>
                 {% endfor %}
-                {% if not persons   %}
+                {% if not services   %}
                     {% ifnotequal current 'Todos' %}
                         <td colspan="7">
-                            Nenhum dos Clientes estão {{ current }}
+                            Nenhum dos Serviços estão {{ current }}
                         </td>
                     {% else %}
                         <td colspan="7">
-                            Nenhum Cliente Cadastrado
+                            Nenhum Serviço Cadastrado
                         </td>
                     {% endifnotequal %}
                 {% endif %}
@@ -146,27 +142,27 @@
     </div>
 {% endblock %}
 {% block scripts %}
-    {% if persons|length > 0 %}
+    {% if services|length > 0 %}
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
         <script src="https://cdn.datatables.net/buttons/1.5.6/js/dataTables.buttons.min.js"></script>
         <script src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.print.min.js"></script>
         <script>
         $(document).ready( function () {
-            $('#table-clients').DataTable({
+            $('#table-services').DataTable({
                 dom: 'Bfrtip',
                 buttons: [
                     {
                         extend: 'print',
-                        text: 'Gerar Relatorio de {{ current }}',
+                        text: 'Gerar Relatório de {{ current }}',
                         className: 'btn btn-primary',
                         exportOptions: {
-                            columns: [0,1,2,3,4]
+                            columns: [0,1,2,3,4,]
                         }
                     },
                 ],
                 "language": {
                     "lengthMenu": "Mostrar _MENU_ por Página",
-                    "zeroRecords": "Nenhum Registro de Clientes",
+                    "zeroRecords": "Nenhum Registro de Serviços",
                     "info": "Pagina _PAGE_ de _PAGES_",
                     "infoEmpty": "Nenhum registro disponivel",
                     "search":"Pesquisar",

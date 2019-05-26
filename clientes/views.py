@@ -74,9 +74,8 @@ def update_client(request, id):
 @login_required
 def delete_client(request, id):
     person = get_object_or_404(Client, pk=id)
-    deleted = person
     person.delete()
-    messages.add_message(request, messages.SUCCESS, 'O usuário '+deleted.full_name()+' não será mais listado nas relações de clientes!', extra_tags='deleted')
+    messages.add_message(request, messages.SUCCESS, 'O usuário '+person.full_name()+' não será mais listado nas relações de clientes!', extra_tags='deleted')
     return redirect('list_clients')
 
 

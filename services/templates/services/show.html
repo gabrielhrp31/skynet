@@ -1,0 +1,59 @@
+{% extends  'dashboard/box.html' %}
+{% load static %}
+{% block title %}
+    Serviço {{ current }}
+{% endblock %}
+{% block page_title %}
+    Visualizar Serviço
+{% endblock %}
+{% block page_description %}
+    {{ current }}
+{% endblock %}
+{% block box_classes %}
+    box-primary
+{% endblock %}
+{% block box_header %}
+    <div class="col-xs-offset-9  col-sm-offset-9 col-md-offset-10 col-lg-offset-11">
+        <a href="{% url 'list_services' %}" class="btn btn-primary"><i class="fa fa-arrow-left">Voltar</i></a>
+    </div>
+{% endblock %}
+{% block table %}
+    <div class="container margin-bottom ">
+    <div class="row">
+        <div class="col-12">
+            <img class="profile-user-img img-responsive img-circle" style="border-color:{{ person.get_border_color }};" src="{% static "imgs/service.png" %}" alt="User profile picture">
+            <h3 class="profile-username text-center">{{ service.name }}</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+                  <p class="text-muted text-center">{{ service.contracts.count }} Contrato(s)</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-lg-6 col-lg-offset-3">
+             <div class="row">
+                 <div class="col-xs-12">
+                     <h4>
+                         Dados Do Serviço
+                     </h4>
+                 </div>
+             </div>
+             <div class="row">
+                 <div class="col-xs-12">
+                    <ul class="list-group list-group-unbordered">
+                        <li class="list-group-item">
+                          <b>Preço</b> <a class="pull-right">{{ service.price }}</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Funcionarios Disponiveis</b><a class="pull-right"> {{ service.get_active_label | safe}} </a>
+                        </li>
+                    </ul>
+                 </div>
+             </div>
+        </div>
+    </div>
+
+
+    </div>
+{% endblock %}

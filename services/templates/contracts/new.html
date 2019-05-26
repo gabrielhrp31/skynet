@@ -1,0 +1,24 @@
+{% extends  'dashboard/box.html' %}
+{% load bootstrap %}
+{% block title %}
+    Novo Serviço
+{% endblock %}
+{% block page_title %}
+    Serviços
+{% endblock %}
+{% block page_description %}
+    Novo
+{% endblock %}
+{% block box_classes %}
+    box-success
+{% endblock %}
+{% block table %}
+    <div class="container">
+        <form  class="margin-bottom" enctype="multipart/form-data" action="{% url 'new_service' %}" method="POST">
+            {% csrf_token %}
+            <h3 class="text-blue">Dados do Serviço</h3>
+            {{ form | bootstrap }}
+            <button class="btn btn-success" type="submit">Salvar</button>
+        </form>
+    </div>
+{% endblock %}

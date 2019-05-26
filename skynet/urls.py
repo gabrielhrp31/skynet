@@ -19,13 +19,17 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from . import views
 from clientes import urls as clients_urls
+from services import urls as services_urls
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('', views.index, name='index'),
     path('edit_profile/', views.update_profile, name='edit_profile'),
     path('profile/', views.profile, name='profile'),
+    # rotas de modulos ou aplicações fora da principal
     path('clients/', include(clients_urls)),
+    path('services/', include(services_urls)),
+    # rotas de login
     path('login/', auth_views.LoginView.as_view(), name='login'),
     path('password_reset/', auth_views.PasswordResetView.as_view(template_name='registration/password_reset_form.html'), name='password_reset'),
     re_path(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
