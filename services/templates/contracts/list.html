@@ -47,10 +47,10 @@
     {{ current }}
 {% endblock %}
 {% block box_classes %}
-    {% ifequal current.lower 'in_progress' %}
+    {% ifequal current.lower 'em progresso' %}
         box-success
     {% endifequal %}
-    {% ifequal current.lower 'finished' %}
+    {% ifequal current.lower 'finalizados' %}
         box-danger
     {% endifequal %}
     {% ifequal current.lower 'todos' %}
@@ -69,57 +69,58 @@
         }
     </style>
     <div class="container-fluid">
-        <table id="table-services" class="table table-hover"  style="width:100%">
+        <table id="table-contracts" class="table table-hover"  style="width:100%">
             <thead>
                 <tr>
                     <th class="align-middle">ID</th>
                     <th>Nome</th>
-                    <th>Idade</th>
-                    <th>Salário</th>
-                    <th>Status</th>
-                    <th >Ver</th>
+                    <th>Duração</th>
+                    <th>Inicio</th>
+                    <th>Término</th>
+                    <th>Ver</th>
                     <th>Editar</th>
                     <th>Deletar</th>
                 </tr>
             </thead>
             <tbody>
-                {% for person in persons %}
+                {% for contract in contracts %}
                     <tr>
-                        <td>{{ person.id }}</td>
-                        <td>{{ person.full_name }}</td>
-                        <td>{{ person.age }}</td>
-                        <td>{{ person.salary }}</td>
+                        <td>{{ contract.id }}</td>
+                        <td>{{ contract }}</td>
+                        <td>± {{ contract.get_duration.days }} Dias</td>
+                        <td>{{ contract.start_date | date:'d/m/Y' }}</td>
+                        <td>{{ contract.end_date | date:'d/m/Y' }}</td>
+{#                        <td>#}
+{#                            <form action="% url 'change_service_status' person.id %">#}
+{#                                <button class="btn-link" type="submit"   style="text-decoration:none;padding: 0;">#}
+{#                                    {{ person.get_active_label | safe }}#}
+{#                                </button>#}
+{#                            </form>#}
+{#                        </td>#}
                         <td>
-                            <form action="{#% url 'change_service_status' person.id %#}">
-                                <button class="btn-link" type="submit"   style="text-decoration:none;padding: 0;">
-                                    {{ person.get_active_label | safe }}
-                                </button>
-                            </form>
+                            <a class="btn btn-info" href="{% url 'show_contract' contract.id %}"><i class="fa fa-eye"></i></a>
                         </td>
                         <td>
-                            <a class="btn btn-info" href="{#% url 'show_service' person.id %#}"><i class="fa fa-eye"></i></a>
+                            <a class="btn btn-warning" href="{% url 'update_contract' contract.id %}"><i class="fa fa-edit"></i></a>
                         </td>
                         <td>
-                            <a class="btn btn-warning" href="{#% url 'update_service' person.id %#}"><i class="fa fa-edit"></i></a>
-                        </td>
-                        <td>
-                            <a  class="btn btn-danger" data-toggle="modal" data-target="#modal-delete{{ person.id }}"><i class="fa fa-trash"></i></a>
+                            <a  class="btn btn-danger" data-toggle="modal" data-target="#modal-delete{{ contract.id }}"><i class="fa fa-trash"></i></a>
                         </td>
                     </tr>
-                    <div class="modal modal-danger fade in" id="modal-delete{{ person.id }}">
+                    <div class="modal modal-danger fade in" id="modal-delete{{ contract.id }}">
                         <div class="modal-dialog">
                             <div class="modal-content">
                               <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                   <span aria-hidden="true">×</span></button>
-                                <h4 class="modal-title">Deletar Cliente</h4>
+                                <h4 class="modal-title">Deletar Contrato</h4>
                               </div>
                               <div class="modal-body">
-                                <p>Tem Certeza que deseja deletar {{ person.full_name }}?</p>
+                                  <p>Tem Certeza que deseja <strong>deletar {{ contract.get_contract_title }} com o id {{ contract.id }} ?</strong></p>
                               </div>
                               <div class="modal-footer">
                                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
-                                  <form action="{#% url 'delete_client' person.id %#}" method="post">
+                                  <form action="{% url 'delete_contract' contract.id %}" method="post">
                                       {% csrf_token %}
                                     <button type="submit" class="btn btn-danger">Delete</button>
                                   </form>
@@ -130,14 +131,14 @@
                         <!-- /.modal-dialog -->
                     </div>
                 {% endfor %}
-                {% if not persons   %}
+                {% if not contracts   %}
                     {% ifnotequal current 'Todos' %}
                         <td colspan="7">
-                            Nenhum dos Serviços estão {{ current }}
+                            Nenhum dos Contratos estão {{ current }}
                         </td>
                     {% else %}
                         <td colspan="7">
-                            Nenhum Serviço Cadastrado
+                            Nenhum Contrato Cadastrado
                         </td>
                     {% endifnotequal %}
                 {% endif %}
@@ -146,13 +147,13 @@
     </div>
 {% endblock %}
 {% block scripts %}
-    {% if persons|length > 0 %}
+    {% if contracts|length > 0 %}
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
         <script src="https://cdn.datatables.net/buttons/1.5.6/js/dataTables.buttons.min.js"></script>
         <script src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.print.min.js"></script>
         <script>
         $(document).ready( function () {
-            $('#table-services').DataTable({
+            $('#table-contracts').DataTable({
                 dom: 'Bfrtip',
                 buttons: [
                     {
@@ -166,7 +167,7 @@
                 ],
                 "language": {
                     "lengthMenu": "Mostrar _MENU_ por Página",
-                    "zeroRecords": "Nenhum Registro de Serviços",
+                    "zeroRecords": "Nenhum Registro de Contratos",
                     "info": "Pagina _PAGE_ de _PAGES_",
                     "infoEmpty": "Nenhum registro disponivel",
                     "search":"Pesquisar",

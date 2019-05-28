@@ -1,13 +1,10 @@
 {% extends  'dashboard/box.html' %}
 {% load static %}
 {% block title %}
-    Serviço {{ current }}
+    Visualizar Serviço
 {% endblock %}
 {% block page_title %}
     Visualizar Serviço
-{% endblock %}
-{% block page_description %}
-    {{ current }}
 {% endblock %}
 {% block box_classes %}
     box-primary
@@ -46,7 +43,10 @@
                           <b>Preço</b> <a class="pull-right">{{ service.price }}</a>
                         </li>
                         <li class="list-group-item">
-                            <b>Funcionarios Disponiveis</b><a class="pull-right"> {{ service.get_active_label | safe}} </a>
+                            <b>Funcionarios Disponiveis</b><a class="pull-right"> {{ service.employees_available }} </a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Status</b><a class="pull-right"> {{ service.get_active_label | safe}} </a>
                         </li>
                     </ul>
                  </div>

@@ -13,7 +13,12 @@ urlpatterns = [
 
     # urls da parte de contratos
     path('contracts/', views.list_contracts, name="list_contracts"),
-    path('contracts/in_progress/', views.list_contracts, name="list_contracts_in_progress"),
-    path('contracts/finished/', views.list_contracts, name="list_contracts_finished"),
-    path('contracts/new/', views.list_contracts, name="new_contract"),
+    path('contracts/in_progress/', views.list_contracts_in_progress, name="list_contracts_in_progress"),
+    path('contracts/finished/', views.list_contracts_finished, name="list_contracts_finished"),
+    path('contracts/new/', views.new_contract, name="new_contract"),
+    path('contracts/show/<int:id>', views.show_contract, name="show_contract"),
+    path('contracts/edit/<int:id>/', views.update_contract, name="update_contract"),
+    # path('contracts/new_to_service/<int:id>', views.new_contract, name="new_contract"),
+    # path('contracts/new_to_client/<int:id>', views.new_contract, name="new_contract"),
+    path('contracts/delete/<int:id>', views.delete_contract, name="delete_contract"),
 ]

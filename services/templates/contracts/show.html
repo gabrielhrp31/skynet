@@ -1,41 +1,39 @@
 {% extends  'dashboard/box.html' %}
 {% load static %}
 {% block title %}
-    Clientes {{ current }}
+    Visualizar Contrato
 {% endblock %}
 {% block page_title %}
-    Visualisar Cliente
-{% endblock %}
-{% block page_description %}
-    {{ current }}
+    Visualizar Contrato
 {% endblock %}
 {% block box_classes %}
     box-primary
 {% endblock %}
 {% block box_header %}
     <div class="col-xs-offset-9  col-sm-offset-9 col-md-offset-10 col-lg-offset-11">
-        <a href="{% url 'list_clients' %}" class="btn btn-primary"><i class="fa fa-arrow-left">Voltar</i></a>
+        <a href="{% url 'list_services' %}" class="btn btn-primary"><i class="fa fa-arrow-left">Voltar</i></a>
     </div>
 {% endblock %}
 {% block table %}
     <div class="container margin-bottom ">
     <div class="row">
         <div class="col-12">
-            <img class="profile-user-img img-responsive img-circle" style="border-color:{{ person.get_border_color }};" src="{% static "imgs/icon.jpg" %}" alt="User profile picture">
-            <h3 class="profile-username text-center">{{ person.first_name }} {{ person.last_name }}</h3>
+            <img class="profile-user-img img-responsive img-circle" style="border-color:{{ person.get_border_color }};" src="{% static "imgs/service.png" %}" alt="User profile picture">
+            <h3 class="profile-username text-center">{{ contract }}</h3>
         </div>
     </div>
     <div class="row">
         <div class="col-12">
-                  <p class="text-muted text-center">{{ person.occupation }}</p>
+                  <p class="text-muted text-center">Duração de {{ contract.get_duration.days }} dia(s)</p>
+                  <p class="text-muted text-center"> {{ contract.description }} (s)</p>
         </div>
     </div>
     <div class="row">
-        <div class="col-xs-12 col-lg-6">
+        <div class="col-xs-12 col-lg-6 col-lg-offset-3">
              <div class="row">
                  <div class="col-xs-12">
                      <h4>
-                         Dados Pessoais
+                         Dados Do Contrato
                      </h4>
                  </div>
              </div>
@@ -43,41 +41,33 @@
                  <div class="col-xs-12">
                     <ul class="list-group list-group-unbordered">
                         <li class="list-group-item">
-                          <b>Idade</b> <a class="pull-right">{{ person.age }}</a>
+                          <b>Contratante</b> <a class="pull-right">{{ contract.client.full_name }}</a>
                         </li>
                         <li class="list-group-item">
-                            <b>Status</b><a class="pull-right"> {{ person.get_active_label | safe}} </a>
+                          <b>Valor Adicional</b> <a class="pull-right">{{ contract.extra_price }}</a>
                         </li>
                         <li class="list-group-item">
-                          <b>Salário</b> <a class="pull-right">{{ person.salary | floatformat }}</a>
+                            <b>Horas Diarias</b><a class="pull-right"> {{ contract.daily_hours }} </a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Data de Ínicio</b><a class="pull-right"> {{ contract.start_date | date:'d/M/Y'}} </a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Data de Término</b><a class="pull-right"> {{ contract.end_date | date:'d/M/Y' }} </a>
                         </li>
                     </ul>
                  </div>
              </div>
-        </div>
-         <div class="col-xs-12 col-lg-6">
              <div class="row">
                  <div class="col-xs-12">
                      <h4>
-                         Endereço
+                         Renovar Contrato
                      </h4>
                  </div>
              </div>
-             <div class="row">
-                 <div class="col-xs-12">
-                     <ul class="list-group list-group-unbordered">
-                        <li class="list-group-item">
-                           <b>Rua: </b>{{ person.address.street }}, <b>Nº</b>{{ person.address.number }}
-                        </li>
-                        <li class="list-group-item">
-                           <b>Bairro: </b>{{ person.address.district }}<br>
-                        </li>
-                        <li class="list-group-item">
-                           <b>Cidade - UF: </b>{{ person.address.city }} -  {{ person.address.country }}
-                        </li>
-                     </ul>
-                 </div>
-             </div>
+            <div class="row">
+
+            </div>
         </div>
     </div>
 

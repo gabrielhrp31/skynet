@@ -1,13 +1,13 @@
 {% extends  'dashboard/box.html' %}
 {% load bootstrap %}
 {% block title %}
-    Editar Cliente
+    Editar Contrato
 {% endblock %}
 {% block page_title %}
-    Clientes
+    Contratos
 {% endblock %}
 {% block page_description %}
-    Editar Cliente
+    Editar Contrato
 {% endblock %}
 {% block box_classes %}
     box-warning
@@ -17,7 +17,6 @@
         <form class="margin-bottom" enctype="multipart/form-data" method="POST">
             {% csrf_token %}
             {{ form | bootstrap }}
-            {{ form_address | bootstrap }}
             <button type="submit" class="btn btn-success">Salvar</button>
         </form>
     </div>

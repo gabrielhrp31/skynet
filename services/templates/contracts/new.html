@@ -1,10 +1,11 @@
 {% extends  'dashboard/box.html' %}
 {% load bootstrap %}
+{% load static %}
 {% block title %}
-    Novo Serviço
+    Novo Contrato
 {% endblock %}
 {% block page_title %}
-    Serviços
+    Contratos
 {% endblock %}
 {% block page_description %}
     Novo
@@ -14,11 +15,20 @@
 {% endblock %}
 {% block table %}
     <div class="container">
-        <form  class="margin-bottom" enctype="multipart/form-data" action="{% url 'new_service' %}" method="POST">
+        <form  class="margin-bottom" enctype="multipart/form-data" action="{% url 'new_contract' %}" method="POST">
             {% csrf_token %}
-            <h3 class="text-blue">Dados do Serviço</h3>
+            <h3 class="text-blue">Dados do Contrato</h3>
             {{ form | bootstrap }}
             <button class="btn btn-success" type="submit">Salvar</button>
         </form>
     </div>
 {% endblock %}
+{% block scripts %}
+    <script src="{% static "bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js" %}"></script>
+    <script src="{% static "plugins/input-mask/jquery.inputmask.js" %}"></script>
+    <script src="{% static "plugins/input-mask/jquery.inputmask.date.extensions.js" %}"></script>
+    <script src="{% static "plugins/input-mask/jquery.inputmask.extensions.js" %}"></script>
+    <script>
+        $('#id_start_date, #id_end_date').inputmask('dd/mm/yyyy');
+    </script>
+{%  endblock %}

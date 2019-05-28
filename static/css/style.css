@@ -1,0 +1,9 @@
+@media print {
+    html, body {
+        height: auto!important;
+    }
+}
+
+.datepicker{
+    cursor: pointer;
+}
