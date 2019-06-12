@@ -9,6 +9,27 @@
 {% block box_classes %}
     box-primary
 {% endblock %}
+
+{% block alert %}
+    {% if messages %}
+        {% for message in messages %}
+            {% if 'renewed' in message.tags and 'error' in message.tags   %}
+                <div class="alert alert-danger alert-dismissible margin">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4><i class="icon fa fa-check"></i> Contrato Não Renovado!</h4>
+                    <span> {{ message }}</span>
+                </div>
+            {% endif %}
+            {% if 'renewed' in message.tags  and 'success' in message.tags  %}
+                <div class="alert alert-success alert-dismissible margin">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4><i class="icon fa fa-check"></i> Contrato Renovado!</h4>
+                    <span> {{ message }}</span>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endblock %}
 {% block box_header %}
     <div class="col-xs-offset-9  col-sm-offset-9 col-md-offset-10 col-lg-offset-11">
         <a href="{% url 'list_services' %}" class="btn btn-primary"><i class="fa fa-arrow-left">Voltar</i></a>
@@ -47,6 +68,9 @@
                           <b>Valor Adicional</b> <a class="pull-right">{{ contract.extra_price }}</a>
                         </li>
                         <li class="list-group-item">
+                          <b>Valor Total</b> <a class="pull-right">{{ contract.total_price  }}</a>
+                        </li>
+                        <li class="list-group-item">
                             <b>Horas Diarias</b><a class="pull-right"> {{ contract.daily_hours }} </a>
                         </li>
                         <li class="list-group-item">
@@ -55,19 +79,36 @@
                         <li class="list-group-item">
                             <b>Data de Término</b><a class="pull-right"> {{ contract.end_date | date:'d/M/Y' }} </a>
                         </li>
+                        {% if not renewable and contract.renewed %}
+                            <li class="list-group-item">
+                                <b>Data de Renovação</b><a class="pull-right"> {{ contract.renewed | date:'d/M/Y' }} </a>
+                            </li>
+                        {% endif %}
                     </ul>
                  </div>
              </div>
-             <div class="row">
-                 <div class="col-xs-12">
-                     <h4>
-                         Renovar Contrato
-                     </h4>
+             <form class="row" action="{% url 'show_contract' contract.id %}" method="post">
+                {% csrf_token %}
+                 <div class="col-xs-6 col-sm-4 col-sm-offset-3 form-group">
+                     <label>
+                         Renovar por:
+                         <input type="number" class="form-control" name="renew_for" id="renew_for" placeholder="Ex.:10 Dias" value="0" {% if not renewable %} disabled {% endif %} >
+                     </label>
                  </div>
-             </div>
-            <div class="row">
-
-            </div>
+                 <div class="col-xs-6 col-sm-3 form-group">
+                     <label>
+                         Tipo:
+                         <select class="form-control" name="renew_type" id="renew_type" {% if not renewable %} disabled {% endif %}>
+                            <option>Dias</option>
+                            <option>Meses</option>
+                            <option>Anos</option>
+                         </select>
+                     </label>
+                 </div>
+                 <div class="col-xs-11 col-sm-7" style="margin-top:15px;">
+                     <button type="submit" class="btn btn-success pull-right" {% if not renewable %} disabled {% endif %}>Renovar</button>
+                 </div>
+             </form>
         </div>
     </div>
 

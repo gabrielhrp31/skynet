@@ -1,5 +1,6 @@
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 
+from django.contrib import messages
 from django.core.exceptions import ValidationError
 from django.db import models
 
@@ -13,6 +14,7 @@ class Contract(models.Model):
     description = models.TextField(default='')
     daily_hours = models.FloatField(default=0.0)
     extra_price = models.FloatField(default=0.0)
+    renewed = models.DateField(null=True,)
     start_date = models.DateField(null=False, default=date.today())
     end_date = models.DateField(null=False, default=date.today())
     
@@ -32,3 +34,11 @@ class Contract(models.Model):
 
     def get_duration(self):
         return self.end_date-self.start_date + timedelta(days=1)
+
+    def renew(self, days_renewed, request):
+        self.renewed = datetime.now()
+        self.end_date = self.end_date+timedelta(days=days_renewed)
+        self.save()
+        
+    def total_price(self):
+        return self.extra_price+self.service.price

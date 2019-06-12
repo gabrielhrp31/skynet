@@ -10,10 +10,18 @@
 {% block alert %}
     {% if messages %}
         {% for message in messages %}
-            {% if 'status' in message.tags %}
-                <div class="alert alert-info alert-dismissible margin">
+            {% if 'status' in message.tags  and 'success' in message.tags  %}
+                <div class="alert alert-danger alert-dismissible margin">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4><i class="icon fa fa-check"></i> Status Não Alterado!</h4>
                     <span> {{ message }}</span>
+                </div>
+            {% endif %}
+            {% if 'status' in message.tags and 'error' in message.tags %}
+                <div class="alert alert-success alert-dismissible margin">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4><i class="icon fa fa-check"></i> Status Alterado!</h4>
+                    <span> {{ message }} </span>
                 </div>
             {% endif %}
             {% if 'deleted' in message.tags %}

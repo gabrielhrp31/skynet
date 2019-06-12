@@ -61,7 +61,23 @@ def new_contract(request):
 @login_required
 def show_contract(request, id):
     contract = Contract.objects.get(pk=id)
-    return render(request, 'contracts/show.html', {'contract': contract})
+    contracts_finished = Contract.objects.filter(end_date__lte=datetime.now())
+    renewable = False
+    if contract.end_date.__lt__(datetime.utcnow()):
+        renewable = True
+    if request.method == 'POST' and renewable:
+        renew_for = request.POST['renew_for']
+        if renew_for != '':
+            renew_for = int(renew_for)
+            renew_type = request.POST['renew_type']
+            renew_types = {'Meses': 30, 'Dias': 1, 'Anos': 365}
+            renew_total = renew_for * renew_types[renew_type]
+            contract.renew(renew_total, request)
+            messages.add_message(request, messages.SUCCESS, 'Contrato renovado com sucesso para '+str(renew_for) + ' ' + renew_type + '!', extra_tags='renewed')
+        else:
+            messages.add_message(request, messages.ERROR, 'Erro ao renovar contrato! Digite uma quantidade', extra_tags='renewed')
+        redirect('show_contract', 2)
+    return render(request, 'contracts/show.html', {'contract': contract, 'renewable': renewable})
 
 
 @login_required
@@ -138,8 +154,7 @@ def update_service(request, id):
 @login_required
 def change_status(request, id):
     service = get_object_or_404(Service, pk=id)
-    service.change_status()
-    messages.add_message(request, messages.INFO, 'O status do serviço '+service.name+' foi alterado!', extra_tags='status')
+    service.change_status(request)
     return redirect('list_services')
 
 

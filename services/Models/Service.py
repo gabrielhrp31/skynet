@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.db import models
 from clientes.models import Client
 
@@ -16,8 +17,14 @@ class Service(models.Model):
     def get_name(self):
         return self.name
 
-    def change_status(self):
-        self.status = not self.status
+    def change_status(self, request):
+        if self.contracts.count()==0:
+            messages.add_message(request, messages.SUCCESS, 'O status do serviço ' + self.name + ' foi alterado!',
+                             extra_tags='status')
+            self.status = not self.status
+        else:
+            messages.add_message(request, messages.ERROR, 'O status do serviço ' + self.name + ' não foi alterado pois o mesmo possui '+str(self.contracts.count())+' contrato(s) ativo(s)!',
+                             extra_tags='status')
         self.save()
 
     def get_active_label(self):

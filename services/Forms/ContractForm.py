@@ -15,5 +15,5 @@ class ContractForm(ModelForm):
             'description': 'Descrição',
             'daily_hours': 'Horas por Dia',
             'start_date': 'Data de Ínicio',
-            'end_date': 'Data de Término'
+            'end_date': 'Data de Término',
         }
